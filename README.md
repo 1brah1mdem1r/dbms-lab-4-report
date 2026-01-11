@@ -78,7 +78,7 @@ Bir veritabanının performansını belirleyen en temel kısıt diskin yavaşlı
 
 ## VT Üzerinde Gösterilen Kaynak Kodları
 
-Buffer manager ile sayfaların RAM'e nasıl alındığını gösteren kodlar[Linki]([https://...](https://github.com/postgres/postgres/blob/master/src/backend/storage/buffer/bufmgr.c)) \
+Buffer manager ile sayfaların RAM'e nasıl alındığını gösteren kodlar[Linki]((https://github.com/postgres/postgres/blob/master/src/backend/storage/buffer/bufmgr.c)) \
 B-three search ile indeks üzerinde arama mantığı. [Linki]([https://...](https://github.com/postgres/postgres/blob/master/src/backend/access/nbtree/nbtsearch.c)) \
 ... \
 ...
