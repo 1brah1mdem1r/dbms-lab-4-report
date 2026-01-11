@@ -12,47 +12,49 @@ Aşağıda kutucuk (checkbox) ile gösterilen maddelerden en az birini seçtiği
 
 ### Disk Erişimi
 
-- [ ]  **Blok bazlı disk erişimi** → block_id + offset
+- [X]  **Blok bazlı disk erişimi** → block_id + offset
 - [ ]  Rastgele erişim
 
 ### VT için Page (Sayfa) Anlamı
 
-- [ ]  VT hangisini kullanır? **Satır/ Sayfa** okuması
+- [X]  VT hangisini kullanır? **Satır/ Sayfa** okuması
 
 ---
 
 ### Buffer Pool
 
-- [ ]  Veritabanları, Sık kullanılan sayfaları bellekte (RAM) kopyalar mı (caching) ?
+- [X]  Veritabanları, Sık kullanılan sayfaları bellekte (RAM) kopyalar mı (caching) ?
 
-- [ ]  LRU / CLOCK gibi algoritmaları
-- [ ]  Diske yapılan I/O nasıl minimize ederler?
+- [X]  LRU / CLOCK gibi algoritmaları
+- [X]  Diske yapılan I/O nasıl minimize ederler?
 
 # 2. Veri Yapıları Perspektifi
 
-- [ ]  B+ Tree Veri Yapıları VT' lerde nasıl kullanılır?
+- [X]  B+ Tree Veri Yapıları VT' lerde nasıl kullanılır?
 - [ ]  VT' lerde hangi veri yapıları hangi amaçlarla kullanılır?
-- [ ]  Clustered vs Non-Clustered Index Kavramı
+- [X]  Clustered vs Non-Clustered Index Kavramı
 - [ ]  InnoDB satırı diskte nasıl durur?
 - [ ]  LSM-tree (LevelDB, RocksDB) farkı
 - [ ]  PostgreSQL heap + index ayrımı
 
 DB diske yazarken:
 
-- [ ]  WAL (Write Ahead Log) İlkesi
+- [X]  WAL (Write Ahead Log) İlkesi
 - [ ]  Log disk (fsync vs write) sistem çağrıları farkı
 
 ---
 
 # Özet Tablo
 
-| Kavram      | Bellek          | Disk / DB      |
-| ----------- | --------------- | -------------- |
-| Adresleme   | Pointer         | Page + Offset  |
-| Hız         | O(1)            | Page IO        |
-| PK          | Yok             | Index anahtarı |
-| Veri yapısı | Array / Pointer | B+Tree         |
-| Cache       | CPU cache       | Buffer Pool    |
+| Kavram      | Bellek             | Disk / DB         |
+| ----------- | ---------------    | ----------------- |
+| Veri birimi | Değişken / Nesne   | Page              |
+| Adresleme   | Pointer            | Page + Offset     |
+| Hız         | O(1)               | Page IO           |
+| PK          | Yok                | Index anahtarı    |
+| Yazma yöntem| Doğrudan güncelleme| Wal(Sıralı yazma) |
+| Veri yapısı | Array / Pointer    | B+Tree            |
+| Cache       | CPU cache          | Buffer Pool       |
 
 ---
 
@@ -63,17 +65,17 @@ Ekran kaydı. 2-3 dk. açık kaynak V.T. kodu üzerinde konunun gösterimi. Vide
 
 # Açıklama (Ort. 600 kelime)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lacinia luctus urna, vel aliquet lacus facilisis ac. Donec quis placerat orci, efficitur consectetur lacus. Sed rhoncus erat ex, at sagittis velit mollis et. Aliquam enim orci, sollicitudin sit amet libero quis, mollis ultricies risus. Fusce tempor, felis a consequat tristique, dolor magna convallis nulla, vel ullamcorper magna mauris non ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam quis imperdiet ex, at blandit sapien. Aliquam lacinia erat ac ipsum fringilla, quis vestibulum augue posuere. Nulla in enim nulla. Nunc euismod odio mauris, sed sollicitudin ex condimentum non. In efficitur egestas enim. Fusce tempus erat quis placerat convallis.
+Bir veritabanının performansını belirleyen en temel kısıt diskin yavaşlığıdır. İşlemci (CPU) ve bellek (RAM) çok hızlıyken, diskten veri okumak kaplumbağa hızı gibidir. Veritabanları bu yavaşlığı aşmak için "akıllıca" bazı yöntemler kullanır.
 
-Nam sit amet tincidunt ante. Pellentesque sit amet quam interdum, pellentesque dui vel, iaculis elit. Donec sed dui sodales nulla dignissim tincidunt. Maecenas semper metus id fermentum vulputate. Pellentesque lobortis hendrerit venenatis. Nullam imperdiet, ex eget ultricies egestas, mauris nunc aliquam ante, sed consectetur tellus ex vel leo. Nunc ut erat dapibus, auctor dolor eu, pretium sem. In lacinia congue eros et finibus. Aenean auctor, leo a feugiat placerat, urna felis lacinia purus, laoreet volutpat mi nisl eget dui. Ut vitae condimentum leo.
+1. Sayfa (Page) ve Blok Mantığı Veritabanı, diskten veri okurken "bana sadece 5. satırı getir" demez. Bunun yerine, o satırı da içine alan büyük bir kutuyu, yani bir Sayfayı (Page) komple okur. Bu sayfalar genelde 8KB veya 16KB boyutundadır. Neden? Çünkü diske bir kere gitmişken çevredeki verileri de alıp getirmek, ileride lazım olabilecek veriler için tekrar diske gitme zahmetinden bizi kurtarır.
 
-Maecenas ex diam, vehicula et nulla vel, mattis viverra metus. Nam at ex scelerisque, semper augue lobortis, semper est. Etiam id pretium odio, eget rutrum neque. Pellentesque blandit magna vel aliquam gravida. Nullam massa nisl, imperdiet at dapibus non, cursus vehicula turpis. Vestibulum rutrum hendrerit augue. Aliquam id nisi id arcu tempor venenatis vel nec erat. Morbi sed posuere erat. Morbi et sollicitudin urna. Suspendisse ullamcorper vitae purus sit amet sodales. Nam ut tincidunt ipsum, ut varius erat. Duis congue magna nec euismod condimentum. In hac habitasse platea dictumst. Nunc mattis odio sed enim laoreet imperdiet. In hac habitasse platea dictumst. Nullam tincidunt quis.
+2. Buffer Pool (Bellek Yönetimi) Disk çok yavaş olduğu için veritabanı, diskten okuduğu sayfaları RAM üzerinde Buffer Pool denilen bir alanda saklar. Eğer aynı veri tekrar lazım olursa, diske hiç gitmeden doğrudan RAM'den verir. Ancak RAM sınırlıdır. RAM dolduğunda, "en az kullanılan" sayfaları (LRU - Least Recently Used) dışarı atar ve yerine yenilerini koyar. Bu sayede disk trafiği (I/O) minimize edilmiş olur.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lacinia luctus urna, vel aliquet lacus facilisis ac. Donec quis placerat orci, efficitur consectetur lacus. Sed rhoncus erat ex, at sagittis velit mollis et. Aliquam enim orci, sollicitudin sit amet libero quis, mollis ultricies risus. Fusce tempor, felis a consequat tristique, dolor magna convallis nulla, vel ullamcorper magna mauris non ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam quis imperdiet ex, at blandit sapien. Aliquam lacinia erat ac ipsum fringilla, quis vestibulum augue posuere. Nulla in enim nulla. Nunc euismod odio mauris, sed sollicitudin ex condimentum non. In efficitur egestas enim. Fusce tempus erat quis placerat convallis.
+3. B+ Tree ve İndeksleme Milyonlarca satır arasından bir veriyi bulmak için tüm tabloyu baştan sona taramak (Full Table Scan) felakettir. Veritabanları, verileri B+ Tree adı verilen bir ağaç yapısında tutar. Bu yapı sayesinde, aradığımız veriye sadece birkaç adımda ulaşabiliriz. Clustered Index kullandığımızda, verinin kendisi bu ağacın yapraklarında alfabetik/sayısal sırada dizili durur. Bu da aralık sorgularını (örneğin: ID'si 10 ile 50 arasındakiler) inanılmaz hızlandırır.
 
-Nam sit amet tincidunt ante. Pellentesque sit amet quam interdum, pellentesque dui vel, iaculis elit. Donec sed dui sodales nulla dignissim tincidunt. Maecenas semper metus id fermentum vulputate. Pellentesque lobortis hendrerit venenatis. Nullam imperdiet, ex eget ultricies egestas, mauris nunc aliquam ante, sed consectetur tellus ex vel leo. Nunc ut erat dapibus, auctor dolor eu, pretium sem. In lacinia congue eros et finibus. Aenean auctor, leo a feugiat placerat, urna felis lacinia purus, laoreet volutpat mi nisl eget dui. Ut vitae condimentum leo.
+4. WAL (Write Ahead Log) ve Yazma Hızı Veritabanına bir şey kaydettiğinizde, veritabanı bunu hemen ana veri dosyasına gidip yazmaz. Çünkü ana dosyada yer bulup yazmak "rastgele erişim" gerektirir ve yavaştır. Bunun yerine, yapılan işlemi hemen bir Günlük (WAL) dosyasına alt alta sırayla yazar. Sıralı yazmak (Append-only) çok daha hızlıdır. Eğer sistem çökerse, bu günlüğe bakarak veriyi kurtarabilir.
 
-Maecenas ex diam, vehicula et nulla vel, mattis viverra metus. Nam at ex scelerisque, semper augue lobortis, semper est. Etiam id pretium odio, eget rutrum neque. Pellentesque blandit magna vel aliquam gravida. Nullam massa nisl, imperdiet at dapibus non, cursus vehicula turpis. Vestibulum rutrum hendrerit augue. Aliquam id nisi id arcu tempor venenatis vel nec erat. Morbi sed posuere erat. Morbi et sollicitudin urna. Suspendisse ullamcorper vitae purus sit amet sodales. Nam ut tincidunt ipsum, ut varius erat. Duis congue magna nec euismod condimentum. In hac habitasse platea dictumst. Nunc mattis odio sed enim laoreet imperdiet. In hac habitasse platea dictumst. Nullam tincidunt quis.
+Özetle; veritabanı performansı, veriyi diskte sayfa bazlı gruplamak, indeks ile hızlı bulmak ve mümkün olduğunca her şeyi RAM'de (Buffer Pool) halletmek üzerine kuruludur.
 
 ## VT Üzerinde Gösterilen Kaynak Kodları
 
