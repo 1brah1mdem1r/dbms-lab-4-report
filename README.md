@@ -78,7 +78,10 @@ Bir veritabanının performansını belirleyen en temel kısıt diskin yavaşlı
 
 ## VT Üzerinde Gösterilen Kaynak Kodları
 
-Buffer manager ile sayfaların RAM'e nasıl alındığını gösteren kodlar[Linki]((https://github.com/postgres/postgres/blob/master/src/backend/storage/buffer/bufmgr.c)) \
-B-three search ile indeks üzerinde arama mantığı. [Linki]([https://...](https://github.com/postgres/postgres/blob/master/src/backend/access/nbtree/nbtsearch.c)) \
+Buffer Pool & LRU/CLOCK Algoritması [Linki](https://github.com/chen3593/PostgreSQL/blob/master/freelist.c) \
+Blok Mantığı ve Sayfa Okuma (I/O Minimizasyonu) [Linki](https://github.com/postgres/postgres/blob/master/src/backend/storage/buffer/bufmgr.c) \
+WAL (Write Ahead Log) İlkesi  [Linki](https://github.com/postgres/postgres/blob/master/src/backend/access/transam/xlog.c)
+B+ Tree ve Index Yapısı [Linki](https://github.com/postgres/postgres/blob/master/src/backend/access/nbtree/nbtsearch.c)
+Clustered vs Non-Clustered (Heap) Ayrımı [Linki](https://github.com/postgres/postgres/blob/master/src/backend/access/heap/heapam.c)
 ... \
 ...
